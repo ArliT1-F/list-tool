@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>List Diff Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <h1>Lists Diff Tool</h1>
+        <p>Paste up to 3 lists • Remove duplicates • Compare instantly</p>
+    </header>
+
+    <main>
+        <section class="input-grid">
+            <div>
+                <label>List A</label>
+                <textarea id="listA" placeholder="Paste List A here"></textarea>
+                <span class="count" id="countA">0 entries</span>
+            </div>
+
+            <div>
+                <label>List B</label>
+                <textarea id="listB" placeholder="Paste List B here"></textarea>
+                <span class="count" id="countB">0 entries</span>
+            </div>
+
+            <div>
+                <label>List C (optional)</label>
+                <textarea id="listC" placeholder="Paste List C here"></textarea>
+                <span class="count" id="countC">0 entries</span>
+            </div>
+        </section>
+
+        <button class="primary" onclick="processLists()">Compare Lists</button>
+
+        <section id="results" class="results hidden">
+            <div class="tabs">
+                <button onclick="showTab('summary')" class="active">Summary</button>
+                <button onclick="showTab('diffs')">Differences</button>
+                <button onclick="showTab('common')">Common</button>
+            </div>
+
+            <div id="summary" class="tab-content"></div>
+            <div id="diffs" class="tab-content hidden"></div>
+            <div id="common" class="tab-content hidden"></div>
+        </section>
+    </main>
+
+    <footer>
+        <span>Runs 100% in your browser • GitHub Pages</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
