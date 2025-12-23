@@ -1,5 +1,9 @@
 function normalizeLine(line) {
-  return line.trim().replace(/\s+/g, " ").toUpperCase();
+  return line
+    .toUpperCase()
+    .replace(/,/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function parseList(text) {
