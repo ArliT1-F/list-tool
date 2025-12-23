@@ -8,48 +8,73 @@
 </head>
 <body>
     <header>
-        <h1>Lists Diff Tool</h1>
+        <h1>📋 Lists Diff Tool</h1>
         <p>Paste up to 3 lists • Remove duplicates • Compare instantly</p>
     </header>
 
     <main>
         <section class="input-grid">
-            <div>
-                <label>List A</label>
-                <textarea id="listA" placeholder="Paste List A here"></textarea>
+            <div class="input-card">
+                <div class="input-header">
+                    <div class="label-wrapper">
+                        <input type="text" class="list-name" id="nameA" value="List A" spellcheck="false" />
+                        <span class="edit-hint">✏️</span>
+                    </div>
+                    <button class="clear-btn" onclick="clearList('listA')" title="Clear list">✕ Clear</button>
+                </div>
+                <textarea id="listA" placeholder="Paste items here (one per line)"></textarea>
                 <span class="count" id="countA">0 entries</span>
             </div>
 
-            <div>
-                <label>List B</label>
-                <textarea id="listB" placeholder="Paste List B here"></textarea>
+            <div class="input-card">
+                <div class="input-header">
+                    <div class="label-wrapper">
+                        <input type="text" class="list-name" id="nameB" value="List B" spellcheck="false" />
+                        <span class="edit-hint">✏️</span>
+                    </div>
+                    <button class="clear-btn" onclick="clearList('listB')" title="Clear list">✕ Clear</button>
+                </div>
+                <textarea id="listB" placeholder="Paste items here (one per line)"></textarea>
                 <span class="count" id="countB">0 entries</span>
             </div>
 
-            <div>
-                <label>List C (optional)</label>
-                <textarea id="listC" placeholder="Paste List C here"></textarea>
+            <div class="input-card">
+                <div class="input-header">
+                    <div class="label-wrapper">
+                        <input type="text" class="list-name" id="nameC" value="List C" spellcheck="false" />
+                        <span class="optional-tag">(optional)</span>
+                        <span class="edit-hint">✏️</span>
+                    </div>
+                    <button class="clear-btn" onclick="clearList('listC')" title="Clear list">✕ Clear</button>
+                </div>
+                <textarea id="listC" placeholder="Paste items here (one per line)"></textarea>
                 <span class="count" id="countC">0 entries</span>
             </div>
         </section>
 
-        <button class="primary" onclick="processLists()">Compare Lists</button>
+        <div class="button-row">
+            <button class="primary" id="compareBtn">🔍 Compare Lists</button>
+            <button class="secondary" id="clearAllBtn">🗑️ Clear All</button>
+            <span class="hint">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to compare</span>
+        </div>
+
+        <div id="validationMsg" class="validation-msg hidden"></div>
 
         <section id="results" class="results hidden">
-            <div class="tabs">
-                <button onclick="showTab('summary')" class="active">Summary</button>
-                <button onclick="showTab('diffs')">Differences</button>
-                <button onclick="showTab('common')">Common</button>
+            <div class="tabs" role="tablist">
+                <button role="tab" data-tab="summary" class="active" aria-selected="true">📊 Summary</button>
+                <button role="tab" data-tab="diffs">🔀 Differences</button>
+                <button role="tab" data-tab="common">✅ Common</button>
             </div>
 
-            <div id="summary" class="tab-content"></div>
-            <div id="diffs" class="tab-content hidden"></div>
-            <div id="common" class="tab-content hidden"></div>
+            <div id="summary" class="tab-content" role="tabpanel"></div>
+            <div id="diffs" class="tab-content hidden" role="tabpanel"></div>
+            <div id="common" class="tab-content hidden" role="tabpanel"></div>
         </section>
     </main>
 
     <footer>
-        <span>Runs 100% in your browser • GitHub Pages</span>
+        <span>🔒 Runs 100% in your browser — Your data never leaves your device</span>
     </footer>
 
     <script src="script.js"></script>
