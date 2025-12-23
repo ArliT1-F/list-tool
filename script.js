@@ -36,27 +36,71 @@ function showTab(id) {
   document.querySelector(`.tabs button[onclick*="${id}"]`).classList.add("active");
 }
 
+function renderBlock(title, items, cssClass) {
+  return `
+    <div class="diff-block">
+      <div class="diff-title">${title}</div>
+      <div class="diff-list" ${cssClass}">
+        ${items.length ? items.join("<br>") : "<span class='empty'>- none -</span>"}
+      </div>
+    </div>
+  `;
+}
+
 function processLists() {
   const A = parseList(listA.value);
   const B = parseList(listB.value);
   const C = parseList(listC.value);
 
   updateCounts(A, B, C);
-
   document.getElementById("results").classList.remove("hidden");
 
   summary.textContent =
     `List A: ${A.size}\nList B: ${B.size}` +
     (C.size ? `\nList C: ${C.size}` : "");
 
-  diffs.textContent =
-    `A → B:\n${diff(A, B).join("\n") || "—"}\n\n` +
-    `B → A:\n${diff(B, A).join("\n") || "—"}` +
-    (C.size ? `\n\nA → C:\n${diff(A, C).join("\n") || "—"}` : "");
+  diffs.innerHTML = `
+    ${renderBlock(
+      "🟥 In A but not in B",
+      diff(A, B),
+      "diff-missing"
+    )}
 
-  common.textContent =
-    `A ∩ B:\n${intersect(A, B).join("\n") || "—"}` +
-    (C.size ? `\n\nA ∩ C:\n${intersect(A, C).join("\n") || "—"}` : "");
+    ${renderBlock(
+      "🟦 In B but not in A",
+      diff(B, A),
+      "diff-only"
+    )}
+
+    ${
+      C.size
+        ? renderBlock(
+            "🟥 In A but not in C",
+            diff(A, C),
+            "diff-missing"
+          )
+        : ""
+    }
+  `;
+  
+  common.innerHTML = `
+    ${renderBlock(
+      "🟩 Common in A & B",
+      intersect(A, B),
+      "diff-common"
+    )}
+
+    ${
+      C.size
+        ? renderBlock(
+            "🟩 Common in A & C",
+            intersect(A, C),
+            "diff-common"
+          )
+        : ""
+    }
+  `;
 
   showTab("summary");
 }
+
