@@ -17,59 +17,84 @@
             <div class="input-card">
                 <div class="input-header">
                     <div class="label-wrapper">
-                        <input type="text" class="list-name" id="nameA" value="List A" spellcheck="false" />
+                        <input type="text" class="list-name" id="nameA" value="List A" spellcheck="false" aria-label="Name for first list" />
                         <span class="edit-hint">✏️</span>
                     </div>
                     <button class="clear-btn" onclick="clearList('listA')" title="Clear list">✕ Clear</button>
                 </div>
-                <textarea id="listA" placeholder="Paste items here (one per line)"></textarea>
-                <span class="count" id="countA">0 entries</span>
+                <textarea id="listA" placeholder="Paste items here (one per line)" aria-label="First list values"></textarea>
+                <span class="count" id="countA" aria-live="polite">0 entries</span>
             </div>
 
             <div class="input-card">
                 <div class="input-header">
                     <div class="label-wrapper">
-                        <input type="text" class="list-name" id="nameB" value="List B" spellcheck="false" />
+                        <input type="text" class="list-name" id="nameB" value="List B" spellcheck="false" aria-label="Name for second list" />
                         <span class="edit-hint">✏️</span>
                     </div>
                     <button class="clear-btn" onclick="clearList('listB')" title="Clear list">✕ Clear</button>
                 </div>
-                <textarea id="listB" placeholder="Paste items here (one per line)"></textarea>
-                <span class="count" id="countB">0 entries</span>
+                <textarea id="listB" placeholder="Paste items here (one per line)" aria-label="Second list values"></textarea>
+                <span class="count" id="countB" aria-live="polite">0 entries</span>
             </div>
 
             <div class="input-card">
                 <div class="input-header">
                     <div class="label-wrapper">
-                        <input type="text" class="list-name" id="nameC" value="List C" spellcheck="false" />
+                        <input type="text" class="list-name" id="nameC" value="List C" spellcheck="false" aria-label="Name for optional third list" />
                         <span class="optional-tag">(optional)</span>
                         <span class="edit-hint">✏️</span>
                     </div>
                     <button class="clear-btn" onclick="clearList('listC')" title="Clear list">✕ Clear</button>
                 </div>
-                <textarea id="listC" placeholder="Paste items here (one per line)"></textarea>
-                <span class="count" id="countC">0 entries</span>
+                <textarea id="listC" placeholder="Paste items here (one per line)" aria-label="Optional third list values"></textarea>
+                <span class="count" id="countC" aria-live="polite">0 entries</span>
             </div>
         </section>
 
         <div class="button-row">
             <button class="primary" id="compareBtn">🔍 Compare Lists</button>
             <button class="secondary" id="clearAllBtn">🗑️ Clear All</button>
+            <button class="secondary" id="swapBtn">🔁 Swap A & B</button>
+            <button class="secondary" id="sampleBtn">✨ Load Sample</button>
+            <button class="secondary" id="exportBtn" disabled>⬇️ Export Active Tab</button>
             <span class="hint">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to compare</span>
         </div>
 
-        <div id="validationMsg" class="validation-msg hidden"></div>
+        <section class="settings-card" aria-label="Comparison settings">
+            <h2>Comparison Settings</h2>
+            <div class="settings-grid">
+                <label class="setting-option">
+                    <input type="checkbox" id="ignoreCase" checked />
+                    Ignore letter case
+                </label>
+                <label class="setting-option">
+                    <input type="checkbox" id="ignoreCommas" checked />
+                    Ignore commas
+                </label>
+                <label class="setting-option">
+                    <input type="checkbox" id="normalizeWhitespace" checked />
+                    Normalize extra spaces
+                </label>
+                <label class="setting-option">
+                    <input type="checkbox" id="autoCompare" />
+                    Auto-compare while typing
+                </label>
+            </div>
+        </section>
+
+        <div id="validationMsg" class="validation-msg hidden" aria-live="assertive"></div>
 
         <section id="results" class="results hidden">
-            <div class="tabs" role="tablist">
-                <button role="tab" data-tab="summary" class="active" aria-selected="true">📊 Summary</button>
-                <button role="tab" data-tab="diffs">🔀 Differences</button>
-                <button role="tab" data-tab="common">✅ Common</button>
+            <div class="tabs" role="tablist" aria-label="Result views">
+                <button id="tab-summary" role="tab" type="button" data-tab="summary" class="active" aria-selected="true" aria-controls="summary">📊 Summary</button>
+                <button id="tab-diffs" role="tab" type="button" data-tab="diffs" aria-selected="false" aria-controls="diffs">🔀 Differences</button>
+                <button id="tab-common" role="tab" type="button" data-tab="common" aria-selected="false" aria-controls="common">✅ Common</button>
             </div>
 
-            <div id="summary" class="tab-content" role="tabpanel"></div>
-            <div id="diffs" class="tab-content hidden" role="tabpanel"></div>
-            <div id="common" class="tab-content hidden" role="tabpanel"></div>
+            <div id="summary" class="tab-content" role="tabpanel" aria-labelledby="tab-summary"></div>
+            <div id="diffs" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-diffs"></div>
+            <div id="common" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-common"></div>
         </section>
     </main>
 
