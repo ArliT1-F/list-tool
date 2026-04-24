@@ -241,7 +241,8 @@ function formatExportSection(title, items) {
     return lines.join("\n");
 }
 
-function processLists() {
+function processLists(options = {}) {
+    const shouldScroll = options.scrollIntoView !== false;
     if (!validate()) {
         resultsEl.classList.add("hidden");
         exportBtn.disabled = true;
@@ -359,7 +360,9 @@ function processLists() {
     showTab(state.activeTab);
     persistState();
 
-    resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (shouldScroll) {
+        resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 }
 
 function maybeAutoCompare() {
@@ -368,7 +371,7 @@ function maybeAutoCompare() {
     }
     clearTimeout(state.autoCompareTimer);
     state.autoCompareTimer = setTimeout(() => {
-        processLists();
+        processLists({ scrollIntoView: false });
     }, AUTO_COMPARE_DEBOUNCE_MS);
 }
 
@@ -389,8 +392,11 @@ function persistState() {
         settings: getSettings(),
         activeTab: state.activeTab
     };
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+    } catch (_error) {
+        // Ignore storage issues (private mode, quota, disabled storage).
+    }
 }
 
 function restoreState() {
@@ -494,7 +500,14 @@ nameC.addEventListener("input", persistState);
 ignoreCaseEl.addEventListener("change", handleInputChange);
 ignoreCommasEl.addEventListener("change", handleInputChange);
 normalizeWhitespaceEl.addEventListener("change", handleInputChange);
-autoCompareEl.addEventListener("change", persistState);
+autoCompareEl.addEventListener("change", () => {
+    persistState();
+    if (!autoCompareEl.checked) {
+        clearTimeout(state.autoCompareTimer);
+        return;
+    }
+    maybeAutoCompare();
+});
 
 document.getElementById("compareBtn").addEventListener("click", processLists);
 document.getElementById("clearAllBtn").addEventListener("click", clearAll);
@@ -530,5 +543,5 @@ document.addEventListener("keydown", (event) => {
 restoreState();
 updateAllCounts();
 if (getSettings().autoCompare && (listA.value || listB.value || listC.value)) {
-    processLists();
+    processLists({ scrollIntoView: false });
 }
